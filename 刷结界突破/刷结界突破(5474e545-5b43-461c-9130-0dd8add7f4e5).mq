@@ -21,20 +21,24 @@ Function main()
     Dim ret,count = 0
     While true
         Call ExpToEnch()
+        
         Call FindClose()
         Call ChooseLiao(sum)
         ret = FindWhichToFight()
         If ret = 1 Then 
-            Call double()
-           
-            Call FindClose()
-            Call ChooseLiao(sum)
-            ret = FindWhichToFight()
-            If ret = 1 Then
-                Call single()
+            ret = Double()
+            If ret = 0 Then 
+            	Call Single()
+           	Else 
+                Call FindClose()
+                Call ChooseLiao(sum)
+                ret = FindWhichToFight()
+                If ret = 1 Then
+                    Call Single()
+                End If
             End If
         End If
-        
+            
         sum = sum + 1
         If sum = 4 Then 
             Call SecAccount()
@@ -82,7 +86,7 @@ Function SecAccount()
         Call ChooseLiao(sum)
         ret = FindWhichToFight()
         If ret = 1 Then
-            Call single()
+            Call Single()
         End If
         
         Delay 1000
@@ -101,7 +105,7 @@ Function SecAccount()
     
 End Function
 
-Function double()//组队攻击
+Function Double()//组队攻击
     Call L("double")
     
     Dim x,y,count = 0
@@ -115,8 +119,9 @@ Function double()//组队攻击
             Exit Do
         Else 
             If flag = 1 Then 
-                Tap 1232,373-DeviationY //阴阳寮
-                Delay 1000
+                //Tap 1232,373-DeviationY //阴阳寮
+                //Delay 1000
+                Double = 0
                 Exit Function
             Else
                 Delay 2000
@@ -143,6 +148,8 @@ Function double()//组队攻击
     Call StartFight()
    
     Call DoubleFight()
+    
+    Double = 1
 End Function
 
 Function DoubleFight()
@@ -161,7 +168,7 @@ Function DoubleFight()
     Call Fight()
 End Function
 
-Function single()//单人攻击
+Function Single()//单人攻击
     Call L("single")
     
     Dim x,y,count = 0
