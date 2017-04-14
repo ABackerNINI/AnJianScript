@@ -13,20 +13,24 @@ Call main()
 Function main()
     Call L("main")
 	
-    Call Invite()
-	
     Dim ret,count = 0
+    
+    ret = Invite()
+	
     Do
-        If flag = 0 Then 
+        If (flag = 0 And ret = 1) Or flag = 1 Then 
             Call ShiftTo(2)
 	 	
             Call Accept()
 	 	
             Call ShiftTo(3)
+            
+            flag = 1
         End If
+        
         Do
             ret = FindWhichToFight(count)
-            If ret <> 0  Then 
+            If ret = 1  Then 
                 Call ShiftTo(2)
 	 			
                 Call Fight()
@@ -34,22 +38,24 @@ Function main()
                 Call ShiftTo(3)
 	 			
                 Call Fight()
-            Else
-                Exit Do//mark
-            End If
-            
-            If ret = 2 Then 
-                Call FindGift()
-                
+            ElseIf ret = 2 Then 
                 Call ShiftTo(2)
-                
+	 			
+                Call Fight()
+	 			
                 Call FindGift()
                 
                 Call ShiftTo(3)
-            	
+	 			
+                Call Fight()
+                
+                Call FindGift()
+                
                 Call ContinueInvite()
 	 			
                 Exit Do
+            Else
+                Exit Do//mark
             End If
         Loop
     Loop
@@ -64,9 +70,9 @@ Function FindGift()
             Tap x + 15, y + 15
             Delay 3000
             Tap 1249,729 - DeviationY //R
-            Delay 2000
+            Delay 2500
         End If
-        Delay 1000
+        Delay 300
         
         count = count + 1
         If count > 8 Then 
@@ -102,7 +108,7 @@ Function FindWhichToFight(i)
         Delay 3500
         
         count = count + 1
-        If count > 8 Then 
+        If count > 10 Then 
             Exit Do
         End If
     Loop
@@ -111,7 +117,7 @@ Function FindWhichToFight(i)
     Exit Function
     
     Rem EndFindWhichToFight
-    Tap fight_x, fight_y
+    Tap fight_x, fight_y //怪
     Delay 3000
 End Function
 
@@ -119,9 +125,9 @@ Function Invite()
     Call L("Invite")
     
     Dim x,y,count = 0
-    FindPic 570,530-DeviationY,730,590-DeviationY,"Attachment:组队.bmp","000000",0,0.8,x,y
-    If x < 0 And y < 0 Then 
-        flag = 1
+    FindPic 25,69-DeviationY,72,122-DeviationY,"Attachment:return.bmp","000000",0,0.8,x,y
+    If x > 0 And y > 0 Then 
+        Invite = 0
         Exit Function
     End If
     
@@ -144,6 +150,8 @@ Function Invite()
     
     Tap 774,607-DeviationY //邀请按钮
     Delay 1000
+    
+    Invite = 1
 End Function
 
 Function Accept()
@@ -186,6 +194,8 @@ End Function
 Function Fight()
     Call L("Fight")
     
+    Tap 960,290-DeviationY//小怪
+    
     Dim x,y,count = 0
     Do	
         FindPic 400,170-DeviationY,540,270-DeviationY,"Attachment:胜利画面.bmp","000000",0,0.9,x,y
@@ -212,6 +222,20 @@ Function Fight()
     Call L("Tap 3")
     Tap 1164,584-DeviationY//准备
     Delay 4000
+    
+    count = 0
+    Do
+        FindPic 25,69-DeviationY,72,122-DeviationY,"Attachment:return.bmp","000000",0,0.8,x,y
+        If x > 0 and y > 0 Then 
+            Exit Do
+        End If
+        Delay 1000
+        
+        Tap 1164,584-DeviationY//准备
+        
+        count = count + 1
+        Call L3("Fight::Do2 "&count,count,20)
+    Loop
 End Function
 
 Function ShiftTo(i)
