@@ -1,0 +1,549 @@
+//Version:1.0.0
+
+//init
+
+//global vars
+Dim DeviationY = 35
+Dim fight_x,fight_y
+Dim flag = 1
+Log.Open 
+
+Call main()
+//Call Restart()
+
+Function main()
+    Call L("Main")
+    
+    Call ShiftTo(2)
+    
+    Dim sum = 1
+    
+    Dim ret,count = 0
+    While true
+        Call ExpToEnch()
+        
+        Call FindClose()
+        Call ChooseLiao(sum)
+        ret = FindWhichToFight()
+        If ret = 1 Then 
+            ret = Double()
+            If ret = 0 Then 
+            	Call Single()
+           	Else 
+                Call FindClose()
+                Call ChooseLiao(sum)
+                ret = FindWhichToFight()
+                If ret = 1 Then
+                    Call Single()
+                End If
+            End If
+        End If
+            
+        sum = sum + 1
+        If sum = 4 Then 
+            Call SecAccount()
+            sum = 1
+            flag = 0
+        End If
+        Delay 1000
+        
+        count = count + 1
+        Call L3("Main::While "& count,count,301)//mark
+    Wend
+End Function
+
+Function SecAccount()
+    Call L("SecAccount")
+    
+    Dim x,y
+    Call ShiftTo(3)
+    
+    FindPic 1150, 75-DeviationY, 1210, 125-DeviationY, "Attachment:close.bmp", "000000",0,0.8, x, y
+    If x > 0 and y > 0 Then 
+        Tap 1186, 104 - DeviationY //close
+        Delay 1000
+    End If
+    Call ExpToEnch()
+    
+    Dim sum = 1
+    Dim ret,count
+    While sum < 4
+        count = 0
+        Do
+            FindPic 1150, 75-DeviationY, 1210, 125-DeviationY, "Attachment:close.bmp", "000000",0,0.8, x, y
+            If x > 0 and y > 0 Then 
+                Exit Do
+            End If
+            
+            If count > 20 Then 
+                Goto EndSecAccount
+            End If
+            Delay 1000
+            
+            count = count + 1
+            Call L3("SecAccount::While::Do " & count,count,50)
+        Loop
+        Call ChooseLiao(sum)
+        ret = FindWhichToFight()
+        If ret = 1 Then
+            Call Single()
+        End If
+        
+        Delay 1000
+        
+        sum = sum + 1
+        Call L3("SecAccount::While " & sum,sum,5)
+    Wend
+    
+    Rem EndSecAccount
+    Call ShiftTo(2)
+    
+    Tap 1186, 104 - DeviationY //close
+    Delay 2000
+    
+    Call ExpToEnch()
+    
+End Function
+
+Function Double()//组队攻击
+    Call L("double")
+    
+    Dim x,y,count = 0
+    Do
+        FindPic fight_x - 400, fight_y - 300, fight_x + 400, fight_y + 300, "Attachment:组队.bmp", "000000",0, 0.8, x, y
+        If x > 0 And y > 0 Then 
+            Delay 1000
+            Tap x,y
+            Delay 2000
+            flag = 0
+            Exit Do
+        Else 
+            If flag = 1 Then 
+                //Tap 1232,373-DeviationY //阴阳寮
+                //Delay 1000
+                Double = 0
+                Exit Function
+            Else
+                Delay 2000
+            End If
+        End If
+        
+        count = count + 1
+        Call L3("double::Do " & count,count,120)
+    Loop
+    
+    FindPic 1150, 75-DeviationY, 1210, 125-DeviationY, "Attachment:close.bmp", "000000",0,0.8, x, y
+    If x > 0 and y > 0 Then 
+        Exit Function
+    End If
+    
+    Call Invite()
+
+    Call ShiftTo(3)
+
+    Call Accept()
+ 
+    Call ShiftTo(2)
+
+    Call StartFight()
+   
+    Call DoubleFight()
+    
+    Double = 1
+End Function
+
+Function DoubleFight()
+    Call L("DoubleFight")
+    
+    Call Ready()
+    
+    Call ShiftTo(3)
+    
+    Call Ready()
+    
+    Call Fight()
+    
+    Call ShiftTo(2)
+    
+    Call Fight()
+End Function
+
+Function Single()//单人攻击
+    Call L("single")
+    
+    Dim x,y,count = 0
+    Do
+        FindPic fight_x - 400, fight_y - 300, fight_x + 400, fight_y + 300, "Attachment:攻击.bmp", "000000",0,0.8, x, y
+        If x > 0 And y > 0 Then 
+            Tap x,y
+            Delay 2000
+            flag = 0
+            Exit Do
+        Else 
+            If flag = 1 Then 
+                Tap 1232,373-DeviationY //阴阳寮
+                Delay 1000
+                Exit Function
+            Else
+                Delay 2000
+            End If
+        End If
+        
+        count = count + 1
+        Call L3("single::Do "& count,count,120)
+    Loop
+    
+    Call Ready()
+    
+    Call Fight()
+End Function
+
+Function Invite()
+    Call L("Invite")
+    
+    Tap 716,507-DeviationY //邀请
+    Delay 1000
+    
+    Dim x,y,count = 0
+    Do
+        FindPic 350,200-DeviationY,920,560-DeviationY,"Attachment:小号.bmp","000000",0,0.8,x,y
+        If x > 0 And y > 0 Then 
+            Tap x,y
+            Delay 1000
+            Exit Do
+        Else 
+            Delay 1000
+        End If
+        
+        count = count + 1
+        Call L3("Invite::Do "&count,count,10)
+    Loop
+    
+    Tap 774,607-DeviationY //邀请按钮
+    Delay 1000
+End Function
+
+Function Accept()
+    Call L("Accept")
+    
+    Dim x,y,count = 0
+    Do
+        FindPic 100,250-DeviationY,170,320-DeviationY,"Attachment:邀请.bmp","000000",0,0.8,x,y
+        If x > 0 And y > 0 Then 
+            Tap x,y
+            Delay 500
+            Exit Do
+        End If
+        Delay 1000
+        
+        count = count + 1
+        Call L3("Accept::Do "&count,count,20)
+    Loop
+End Function
+
+Function StartFight()
+    Call L("StartFight")
+    
+    Dim x,y,count = 0
+    Do
+        FindPic 976,614-DeviationY,1111,654-DeviationY,"Attachment:开始战斗.bmp","000000",0,0.8,x,y
+        If x > 0 And y > 0 Then 
+            Exit Do
+        End If
+        Delay 500
+        
+        count = count + 1
+        Call L3("StartFight::Do "&count,count,20)
+    Loop
+    
+    Tap 1047,634-DeviationY //开始战斗
+    Delay 2000
+End Function
+
+Function Ready()
+    Call L("Ready")
+    
+    Dim x,y,count = 0
+    Do
+        FindPic 1050,670-DeviationY,1120,750-DeviationY,"Attachment:准备.bmp", "000000",0,0.9,x,y
+        If x > 0 And y > 0 Then 
+            Tap 1164,584-DeviationY//准备
+            Exit Do
+        End If
+        Delay 1000
+        
+        count = count + 1
+        Call L3("Ready::Do "&count,count,50)
+    Loop
+End Function
+
+Function Fight()
+    Call L("Fight")
+    
+    Dim x,y,count = 0
+    Do	
+        FindPic 400,170-DeviationY,540,270-DeviationY,"Attachment:胜利画面.bmp","000000",0,0.9,x,y
+        If x > 0 And y > 0 Then
+            Exit Do
+        End If
+        
+        FindPic 400,170-DeviationY,540,270-DeviationY,"Attachment:战斗失败.bmp","000000",0,0.9,x,y
+        If x > 0 And y > 0 Then 
+            Exit Do
+        End If
+        Delay 2000
+        
+        count = count + 1
+        Call L3("Fight::Do1 "&count,count,200)
+    Loop
+    Delay 1000
+    Call L("Tap 1")
+    Tap 1164,584-DeviationY//准备
+    Delay 1500
+    Call L("Tap 2")
+    Tap 1164,584-DeviationY//准备
+    Delay 4000
+    Call L("Tap 3")
+    Tap 1164,584-DeviationY//准备
+    Delay 4000
+    
+    count = 0
+    Do
+        FindPic 1150, 75-DeviationY, 1210, 125-DeviationY, "Attachment:close.bmp", "000000",0,0.8, x, y
+        If x > 0 and y > 0 Then 
+            Exit Do
+        End If
+        Delay 1000
+        
+        Tap 1164,584-DeviationY//准备
+        
+        count = count + 1
+        Call L3("Fight::Do2 "&count,count,20)
+    Loop
+End Function
+
+Function FindClose()
+    Call L("FindClose")
+    
+    Dim x,y,count = 0
+    While true
+        FindPic 1150, 75-DeviationY, 1210, 125-DeviationY, "Attachment:close.bmp", "000000",0,0.8, x, y
+        If x > 0 and y > 0 Then 
+            Exit Function
+        End If
+        Delay 1000
+        
+        count = count + 1
+        Call L3("FindClose::While "&count,count,20)
+    Wend
+End Function
+
+Function ShiftTo(i)
+    Call L("ShiftTo " & i)
+    
+    Dim x,y,count = 0
+    KeyPress "Home"
+    Delay 1000
+    
+    Do
+        FindPic 154, 103 - DeviationY, 224, 169 - DeviationY, "Attachment:阴阳师.bmp", "000000", 0, 0.8, x, y
+        If x > 0 And y > 0 Then 
+            Exit Do
+        End If
+        Delay 1000
+        
+        count = count + 1
+        Call L3("ShiftTo::Do "&count,count,20)
+    Loop
+    
+    Dim sum = 0
+    While True
+        If i = 2 Then 
+            Tap 196, 138-DeviationY //阴阳师
+        ElseIf i = 3 Then
+            Tap 420, 137-DeviationY //#1 阴阳师
+        End If
+        Delay 1000
+    
+        count = 0
+        Do
+            FindPic 154, 103 - DeviationY, 224, 169 - DeviationY, "Attachment:阴阳师.bmp", "000000", 0, 0.8, x, y
+            If x < 0 And y < 0 Then 
+                Delay 1000
+                Exit Function
+            End If
+            Delay 1000
+
+            If count > 10 Then 
+                Exit Do
+            End If
+
+            count = count + 1
+            Call L("ShiftTo::While::Do "&count)
+        Loop
+        
+        sum = sum + 1
+        Call L3("ShiftTo::While "&sum,sum,3)
+    Wend
+End Function
+
+Function ExpToEnch()
+    Call L("ExpToEnch")
+    
+    Dim x,y
+    Delay 2000
+    FindPic 1150, 75-DeviationY, 1210, 125-DeviationY, "Attachment:close.bmp", "000000",0,0.8, x, y
+    If x > 0 and y > 0 Then 
+        Exit Function
+    End If
+    
+    Dim count = 0
+    Do
+        FindPic 0, 0, 0, 0, "Attachment:结界突破.bmp","000000",0,0.8, x, y
+        If x > 0 and y > 0 Then 
+            Tap 419,702 - DeviationY //结界突破
+            Call FindClose()
+            Tap 1232,373 - DeviationY //阴阳寮
+            Delay 2000
+            Exit Do
+        End If
+        Delay 1000
+        
+        If count > 10 Then 
+            Exit Do
+        End If
+        
+        count = count + 1
+        Call L("ExpToEnch::Do "&count)
+    Loop
+End Function
+
+Function ChooseLiao(sum)
+    Call L("ChooseLiao " & sum)
+    
+    Delay 1000
+    If sum = 1 Then
+        Tap 292,209 - DeviationY //第一个寮
+    ElseIf sum = 2 Then
+        Tap 292,394 - DeviationY //第二个寮
+    ElseIf sum = 3 Then
+        Tap 292,581 - DeviationY //第三个寮
+    End If
+    Delay 1000
+End Function
+
+Function FindWhichToFight()//查找等级[1-29]
+    Call L("FindWhichToFight")
+    
+    Dim count = 0
+    Dim x1 = 813,x2 = 1152,y = 150
+    
+    Do
+        FindPic x1 - 50,y - 10 - DeviationY,x1 + 10,y + 50 - DeviationY,"Attachment:未突破.bmp","000000",0,0.9,fight_x,fight_y
+        If fight_x > 0 And fight_y > 0 Then
+            fight_x = x1 - 50
+            fight_y = y + 50
+            Goto EndFindWhichToFight
+        End If
+        
+        FindPic x2 - 50,y - 10 - DeviationY,x2 + 10,y + 50 - DeviationY,"Attachment:未突破.bmp","000000",0,0.9,fight_x,fight_y
+        If fight_x > 0 And fight_y > 0 Then 
+            fight_x = x2 - 50
+            fight_y = y + 50
+            Goto EndFindWhichToFight
+        End If
+        
+        y = y + 135
+        
+        If count = 3 Then 
+            Exit Do
+        End If
+        
+        count = count + 1
+        Call L("FindWhichToFight "&count)
+    Loop
+    
+    FindWhichToFight = 0
+    Exit Function
+    
+    Rem EndFindWhichToFight
+    Tap fight_x, fight_y
+    Call L("Find "&fight_x&","&fight_y)
+    Delay 2500
+    
+    FindWhichToFight = 1
+End Function
+
+Function Restart()
+    Call L("Restart")
+    KillApp "com.netease.onmyoji"
+    KillApp "com.netease.onmyoji.p71bHrVo_1"
+
+    Call Relogin(2)
+	
+    Call Relogin(3)
+    
+    //    Call ShiftTo(2)
+    
+    flag = 0
+	
+    Call main()
+End Function
+
+Function ReLogin(i)
+    Call L("Relogin "&i)
+    
+    Call ShiftTo(i)
+    
+    Dim x,y,count = 0
+    Do
+        FindPic 15, 50-DeviationY, 61, 81-DeviationY, "Attachment:活动关闭.bmp", "000000",0,0.8, x, y
+        If x > 0 and y > 0 Then 
+            Tap 35,66-DeviationY//活动关闭
+            Delay 3000
+            Tap 1163, 442 - DeviationY//右移
+            Delay 1000
+        End If
+            
+        FindPic 1214, 54-DeviationY, 1257, 88-DeviationY, "Attachment:msg.bmp", "000000",0,0.8, x, y
+        If x > 0 and y > 0 Then 
+            Tap 678,169-DeviationY//探索
+            Delay 2000
+            Exit Do
+        End If
+        Tap 639,651-DeviationY//进入游戏
+        Delay 1000
+        
+        count = count + 1
+        Call L3("Relogin::Do "&count,count,50)
+    Loop
+End Function
+
+Function L(s)
+    Call L1(s)
+End Function
+
+Function L1(s)
+    ShowMessage s
+    TracePrint s
+End Function
+
+Function L2(s,i)
+    Call L1(s)
+    If (i > 100) Then 
+        Call Restart()
+    End If
+End Function
+
+Function L3(s,i,j)
+    Call L1(s)
+    If (i > j) Then 
+        Call Restart()
+    End If
+End Function
+
+Function OnScriptExit
+    Call L("OnScriptExit")
+    Log.Close
+End Function
+
