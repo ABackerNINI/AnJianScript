@@ -1,3 +1,4 @@
-@copy "C:\Program Files (x86)\按键精灵\按键精灵手机助手\Script\刷结界突破*.mq" .\刷结界突破\
-@copy "C:\Program Files (x86)\按键精灵\按键精灵手机助手\Script\刷组队*.mq" .\刷组队\
+@copy "C:\Program Files (x86)\按键精灵\按键精灵手机助手\Script\突破_组队*.mq" .\突破_组队\
+@copy "C:\Program Files (x86)\按键精灵\按键精灵手机助手\Script\组队_组队*.mq" .\组队_组队\
+@copy "C:\Program Files (x86)\按键精灵\按键精灵手机助手\Script\副本_组队*.mq" .\副本_组队\
 @pause
