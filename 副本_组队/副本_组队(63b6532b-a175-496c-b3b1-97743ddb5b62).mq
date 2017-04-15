@@ -4,7 +4,6 @@
 
 //global vars
 Dim DeviationY = 35
-Dim fight_x,fight_y
 Dim flag = 0
 Log.Open 
 
@@ -13,7 +12,7 @@ Call main()
 Function main()
     Call L("main")
 	
-    Dim ret,count = 0
+    Dim ret,sum = 0,count = 0
     
     ret = Invite()
 	
@@ -25,11 +24,12 @@ Function main()
 	 	
             Call ShiftTo(3)
             
-            flag = 1
         End If
         
+        flag = 1
+        
         Do
-            ret = FindWhichToFight(count)
+            ret = FindWhichToFight()
             If ret = 1  Then 
                 Call ShiftTo(2)
 	 			
@@ -42,7 +42,7 @@ Function main()
                 Call ShiftTo(2)
 	 			
                 Call Fight()
-	 			
+                
                 Call FindGift()
                 
                 Call ShiftTo(3)
@@ -57,12 +57,23 @@ Function main()
             Else
                 Exit Do//mark
             End If
+            
+            count = count + 1
+            Call L("main::Do::Do "&count)
         Loop
+        
+        sum = sum + 1
+        Call L("main::Do "&sum)
     Loop
 End Function
 
 Function FindGift()
+    Call L("FindGift")
+    
+    Call FindReturn()
+    
     Delay 5000
+    
     Dim x,y,count = 0
     Do
         FindPic 0, 120 - DeviationY, 1280, 930 - DeviationY, "Attachment:Gift.bmp", "000000", 0, 0.8, x, y
@@ -72,20 +83,28 @@ Function FindGift()
             Tap 1249,729 - DeviationY //R
             Delay 2500
         End If
-        Delay 300
         
-        count = count + 1
-        If count > 8 Then 
+        If count > 5 Then 
             Exit Do
         End If
+        
+        count = count + 1
+        Call L("FindGift::Do "& count)
     Loop
 End Function
 
-Function FindWhichToFight(i)
+Function FindWhichToFight()
+    Call L("FindWhichToFight")
+    
+	Delay 1500
+	
     Dim x,y,count = 0
+	Dim fight_x,fight_y
     Do
         FindPic 0, 120 - DeviationY, 1280, 630 - DeviationY, "Attachment:BOSS.bmp", "000000", 0, 0.8, x, y
         If x > 0 and y > 0 Then 
+    		Call L("Find BOSS")
+
             fight_x = x + 25
             fight_y = y + 25
             FindWhichToFight = 2
@@ -94,6 +113,8 @@ Function FindWhichToFight(i)
     
         FindPic 0, 150 - DeviationY, 1280, 630 - DeviationY, "Attachment:小怪.bmp", "000000", 0, 0.8, x, y
         If x > 0 and y > 0 Then 
+    		Call L("Find 小怪")
+    		
             fight_x = x + 25
             fight_y = y + 25
             FindWhichToFight = 1
@@ -107,10 +128,12 @@ Function FindWhichToFight(i)
         End If
         Delay 3500
         
-        count = count + 1
         If count > 10 Then 
             Exit Do
         End If
+        
+        count = count + 1
+        Call L("FindWhichToFight::Do "&count)
     Loop
     
     FindWhichToFight = 0
@@ -118,7 +141,18 @@ Function FindWhichToFight(i)
     
     Rem EndFindWhichToFight
     Tap fight_x, fight_y //怪
+    Call L("Tap "&fight_x&","&fight_y)
     Delay 3000
+    
+    FindPic 0, 120 - DeviationY, 1280, 630 - DeviationY, "Attachment:BOSS.bmp", "000000", 0, 0.8, x, y
+    If x > 0 and y > 0 Then 
+    	Call FindWhichToFight()
+    End If
+    
+    FindPic 0, 150 - DeviationY, 1280, 630 - DeviationY, "Attachment:小怪.bmp", "000000", 0, 0.8, x, y
+    If x > 0 and y > 0 Then 
+    	Call FindWhichToFight()
+    End If
 End Function
 
 Function Invite()
@@ -145,7 +179,7 @@ Function Invite()
         End If
         
         count = count + 1
-        Call L3("Invite::Do "&count,count,10)
+        Call L("Invite::Do "&count)
     Loop
     
     Tap 774,607-DeviationY //邀请按钮
@@ -168,7 +202,7 @@ Function Accept()
         Delay 1000
         
         count = count + 1
-        Call L3("Accept::Do "&count,count,20)
+        Call L("Accept::Do "&count)
     Loop
 End Function
 
@@ -184,11 +218,25 @@ Function ContinueInvite()
         Delay 500
         
         count = count + 1
-        Call L("ContinueInvite::Do "&count)
+        Call L("ContinueInvite::Do1 "&count)
     Loop
     
     Tap 760,463-DeviationY //确定
     Delay 1000
+    
+    count = 0
+    Do
+        FindPic 715, 444 - DeviationY, 808, 481 - DeviationY, "Attachment:确定.bmp", "000000", 0, 0.9, x, y
+        If x > 0 And y > 0 Then 
+            Tap 760,463-DeviationY //确定
+        Else 
+            Exit Do
+        End If
+        Delay 1000
+        
+        count = count + 1
+        Call L("ContinueInvite::Do2 "&count)
+    Loop
 End Function
 
 Function Fight()
@@ -210,7 +258,7 @@ Function Fight()
         Delay 2000
         
         count = count + 1
-        Call L3("Fight::Do1 "&count,count,200)
+        Call L("Fight::Do1 "&count)
     Loop
     Delay 1000
     Call L("Tap 1")
@@ -234,7 +282,23 @@ Function Fight()
         Tap 1164,584-DeviationY//准备
         
         count = count + 1
-        Call L3("Fight::Do2 "&count,count,20)
+        Call L("Fight::Do2 "&count)
+    Loop
+End Function
+
+Function FindReturn()
+    Call L("FindReturn")
+    
+    Dim x,y,count = 0
+    Do
+        FindPic 25,69-DeviationY,72,122-DeviationY,"Attachment:return.bmp","000000",0,0.8,x,y
+        If x > 0 And y > 0 Then 
+            Exit Do
+        End If
+        Delay 1000
+    
+        count = count + 1
+    	Call L("FindReturn::Do " & count)
     Loop
 End Function
 
@@ -253,7 +317,7 @@ Function ShiftTo(i)
         Delay 1000
         
         count = count + 1
-        Call L3("ShiftTo::Do "&count,count,20)
+        Call L("ShiftTo::Do "&count)
     Loop
     
     Dim sum = 0
@@ -283,74 +347,13 @@ Function ShiftTo(i)
         Loop
         
         sum = sum + 1
-        Call L3("ShiftTo::While "&sum,sum,3)
+        Call L("ShiftTo::While "&sum)
     Wend
 End Function
 
-Function Restart()
-    Call L("Restart")
-    KillApp "com.netease.onmyoji"
-    KillApp "com.netease.onmyoji.p71bHrVo_1"
-
-    Call Relogin(2)
-	
-    Call Relogin(3)
-    
-    //    Call ShiftTo(2)
-	
-    Call main()
-End Function
-
-Function ReLogin(i)
-    Call L("Relogin "&i)
-    
-    Call ShiftTo(i)
-    
-    Dim x,y,count = 0
-    Do
-        FindPic 15, 50-DeviationY, 61, 81-DeviationY, "Attachment:活动关闭.bmp", "000000",0,0.8, x, y
-        If x > 0 and y > 0 Then 
-            Tap 35,66-DeviationY//活动关闭
-            Delay 3000
-            Tap 1163, 442 - DeviationY//右移
-            Delay 1000
-        End If
-            
-        FindPic 1214, 54-DeviationY, 1257, 88-DeviationY, "Attachment:msg.bmp", "000000",0,0.8, x, y
-        If x > 0 and y > 0 Then 
-            Tap 678,169-DeviationY//探索
-            Delay 2000
-            Exit Do
-        End If
-        Tap 639,651-DeviationY//进入游戏
-        Delay 1000
-        
-        count = count + 1
-        Call L3("Relogin::Do "&count,count,50)
-    Loop
-End Function
-
 Function L(s)
-    Call L1(s)
-End Function
-
-Function L1(s)
     ShowMessage s
     TracePrint s
-End Function
-
-Function L2(s,i)
-    Call L1(s)
-    If (i > 100) Then 
-        Call Restart()
-    End If
-End Function
-
-Function L3(s,i,j)
-    Call L1(s)
-    If (i > j) Then 
-        Call Restart()
-    End If
 End Function
 
 Function OnScriptExit
