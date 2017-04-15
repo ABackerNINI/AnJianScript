@@ -1,0 +1,228 @@
+//Version:0.1.0
+
+//init
+
+//global vars
+Dim DeviationY = 35
+Dim fight_x,fight_y
+Dim flag = 0
+Log.Open 
+
+Call main()
+
+Function main()
+    Call L("main")
+	
+    Dim x,y,ret,sum=0,count = 0
+    
+    Do
+        FindPic 1030, 666 - DeviationY, 1093, 699 - DeviationY, "Attachment:锁定.bmp", "000000", 0, 0.8, x, y
+        If x < 0 and y < 0 Then
+            Call FindReturn(1)
+            
+            count = 0
+            Do
+                FindPic 0, 35 - DeviationY, 1280, 795 - DeviationY, "Attachment:13章箭与弓道.bmp", "000000", 0, 0.8, x, y
+                If x > 0 and y > 0 Then 
+                    Tap x, y
+                    Delay 1000
+                Else 
+                    Exit Do
+                End If
+                Delay 1000
+                
+                count = count + 1
+                Call L("main::Do::Do1 "&count)
+            Loop
+            
+            count = 0
+            Do
+                FindPic 917, 548 - DeviationY, 987, 584 - DeviationY, "Attachment:探索.bmp", "000000", 0, 0.8, x, y
+                If x > 0 and y > 0 Then 
+                    Tap 955,568//探索
+                    Delay 2000
+                Else 
+                    Exit Do
+                End If
+                Delay 1000
+                
+                count = count + 1
+                Call L("main::Do::Do2 "&count)
+            Loop
+        End If
+        
+        count = count + 1
+        Do
+            ret = FindWhichToFight(count)
+            If ret = 1 Then 
+                Call Fight()
+            ElseIf ret = 2 Then
+                Call Fight()
+        	
+                Call FindGift()
+        	
+                Exit Do
+            Else 
+                Exit Do//mark
+            End If
+                
+            count = count + 1
+            Call L("main::Do::Do3 "&count)
+        Loop
+        
+        sum = sum + 1
+        Call L("main:Do "&sum)
+    Loop
+    
+End Function
+
+Function FindGift()
+    Call L("FindGift")
+
+    Call FindReturn(2)
+    
+    Delay 5000
+    
+    Dim x,y,count = 0
+    Do
+        FindPic 0, 120 - DeviationY, 1280, 930 - DeviationY, "Attachment:Gift.bmp", "000000", 0, 0.8, x, y
+        If x > 0 and y > 0 Then 
+            Tap x + 15, y + 15
+            Delay 3000
+            Tap 1249,729 - DeviationY //R
+            Delay 2500
+        End If
+        
+        count = count + 1
+        If count > 4 Then 
+            Exit Do
+        End If
+    Loop
+End Function
+
+Function FindWhichToFight(i)
+    Call L("FindWhichToFight")
+	
+	Delay 1500
+	
+    Dim x,y,count = 0
+    Do
+        FindPic 0, 120 - DeviationY, 1280, 630 - DeviationY, "Attachment:BOSS.bmp", "000000", 0, 0.8, x, y
+        If x > 0 and y > 0 Then 
+            fight_x = x + 25
+            fight_y = y + 25
+            FindWhichToFight = 2
+            Goto EndFindWhichToFight
+        End If
+    
+        FindPic 0, 150 - DeviationY, 1280, 630 - DeviationY, "Attachment:小怪.bmp", "000000", 0, 0.8, x, y
+        If x > 0 and y > 0 Then 
+            fight_x = x + 25
+            fight_y = y + 25
+            FindWhichToFight = 1
+            Goto EndFindWhichToFight
+        End If
+        
+        If count < 5 Then 
+            Tap 1249,729 - DeviationY //R
+        Else 
+            Tap 51,715 - DeviationY //L
+        End If
+        Delay 3500
+        
+        count = count + 1
+        If count > 10 Then 
+            Exit Do
+        End If
+    Loop
+    
+    FindWhichToFight = 0
+    Exit Function
+    
+    Rem EndFindWhichToFight
+    Tap fight_x, fight_y //怪
+    Delay 3000
+    
+    FindPic 0, 120 - DeviationY, 1280, 630 - DeviationY, "Attachment:BOSS.bmp", "000000", 0, 0.8, x, y
+    If x > 0 and y > 0 Then 
+        Call FindWhichToFight(i)
+    End If
+    
+    FindPic 0, 150 - DeviationY, 1280, 630 - DeviationY, "Attachment:小怪.bmp", "000000", 0, 0.8, x, y
+    If x > 0 and y > 0 Then 
+        Call FindWhichToFight(i)
+    End If
+End Function
+
+Function Fight()
+    Call L("Fight")
+    
+    Tap 960,290-DeviationY//小怪
+    
+    Dim x,y,count = 0
+    Do	
+        FindPic 400,170-DeviationY,540,270-DeviationY,"Attachment:胜利画面.bmp","000000",0,0.9,x,y
+        If x > 0 And y > 0 Then
+            Exit Do
+        End If
+        
+        FindPic 400,170-DeviationY,540,270-DeviationY,"Attachment:战斗失败.bmp","000000",0,0.9,x,y
+        If x > 0 And y > 0 Then 
+            Exit Do
+        End If
+        Delay 2000
+        
+        count = count + 1
+        Call L("Fight::Do1 "&count)
+    Loop
+    Delay 1000
+    Call L("Tap 1")
+    Tap 1164,584-DeviationY//准备
+    Delay 1500
+    Call L("Tap 2")
+    Tap 1164,584-DeviationY//准备
+    Delay 4000
+    Call L("Tap 3")
+    Tap 1164,584-DeviationY//准备
+    Delay 4000
+    
+    count = 0
+    Do
+        FindPic 20,50-DeviationY,90,110-DeviationY,"Attachment:return_2.bmp","000000",0,0.7,x,y
+        If x > 0 and y > 0 Then 
+            Exit Do
+        End If
+        Delay 1000
+        
+        Tap 1164,584-DeviationY//准备
+        
+        count = count + 1
+        Call L("Fight::Do2 "&count)
+    Loop
+End Function
+
+Function FindReturn(i)
+    Call L("FindReturn " & i)
+    Dim x,y,count = 0
+    Do
+        FindPic 20,50-DeviationY,90,110-DeviationY,"Attachment:return_"&i&".bmp","000000",0,0.7,x,y
+        If x > 0 And y > 0 Then 
+            Exit Do
+        End If
+        Delay 1000
+    
+        count = count + 1
+        Call L("FindReturn "&count)
+    Loop
+End Function
+
+Function L(s)
+    ShowMessage s
+    TracePrint s
+End Function
+
+Function OnScriptExit
+    Call L("OnScriptExit")
+    Log.Close
+End Function
+
