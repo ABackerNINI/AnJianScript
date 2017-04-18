@@ -128,9 +128,9 @@ Function FindWhichToFight()
         End If
         Delay 3500
         
-        If count > 10 Then 
-            Exit Do
-        End If
+//        If count > 10 Then 
+//            Exit Do
+//        End If
         
         count = count + 1
         Call L("FindWhichToFight::Do "&count)
@@ -222,7 +222,7 @@ Function ContinueInvite()
     Loop
     
     Tap 760,463-DeviationY //È·¶¨
-    Delay 1000
+    Delay 3000
     
     count = 0
     Do
@@ -360,4 +360,3 @@ Function OnScriptExit
     Call L("OnScriptExit")
     Log.Close
 End Function
-
