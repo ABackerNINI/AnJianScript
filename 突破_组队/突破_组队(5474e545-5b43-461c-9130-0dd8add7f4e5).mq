@@ -513,6 +513,7 @@ Function ReLogin(i)
             
         FindPic 1214, 54-DeviationY, 1257, 88-DeviationY, "Attachment:msg.bmp", "000000",0,0.8, x, y
         If x > 0 and y > 0 Then 
+            Delay 5000
             Tap 678,169-DeviationY//Ì½Ë÷
             Delay 2000
             Exit Do
