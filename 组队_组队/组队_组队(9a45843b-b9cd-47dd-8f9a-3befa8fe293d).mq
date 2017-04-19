@@ -46,20 +46,23 @@ Function Invite()
     Tap 716,507-DeviationY //邀请
     Delay 1000
     
-    Dim x,y,count = 0
-    Do
-        FindPic 350,200-DeviationY,920,560-DeviationY,"Attachment:大号.bmp","000000",0,0.9,x,y
-        If x > 0 And y > 0 Then 
-            Tap x,y
-            Delay 1000
-            Exit Do
-        Else 
-            Delay 1000
-        End If
-        
-        count = count + 1
-        Call L("Invite::Do "&count)
-    Loop
+//    Dim x,y,count = 0
+//    Do
+//        FindPic 350,200-DeviationY,920,560-DeviationY,"Attachment:大号.bmp","000000",0,0.9,x,y
+//        If x > 0 And y > 0 Then 
+//            Tap x,y
+//            Delay 1000
+//            Exit Do
+//        Else 
+//            Delay 1000
+//        End If
+//        
+//        count = count + 1
+//        Call L("Invite::Do "&count)
+//    Loop
+
+	Tap 485,256-DeviationY//大/小号
+	Delay 1000
     
     Tap 774,607-DeviationY //邀请按钮
     Delay 1000
