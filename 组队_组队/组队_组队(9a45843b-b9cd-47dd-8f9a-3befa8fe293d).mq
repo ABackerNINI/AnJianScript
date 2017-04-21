@@ -27,14 +27,12 @@ Function main()
         Call ShiftTo(2)
     	
         Call Ready()
-        
-        Delay 10000
     	
-        Call Fight()
+        Call Fight(1)
     	
         Call ShiftTo(3)
     	
-        Call Fight()
+        Call Fight(2)
     	
         Call ContinueInvite()
     Loop
@@ -141,10 +139,35 @@ Function Ready()
     Loop
 End Function
 
-Function Fight()
+Function Fight(i)
     Call L("Fight")
+        
+    Dim x,y,count = 0,flag_found = 0
+    If i = 1 Then 
+    	Delay 3000
+    	
+        Do
+            FindPic 15,40-DeviationY,60,90-DeviationY,"Attachment:return_3.bmp","000000",0,0.9,x,y
+            If x > 0 And y > 0 Then
+                Tap 960,290-DeviationY//Ð¡¹Ö
+                flag_found = 1
+            Else 
+                If flag_found = 1 Then 
+                    Exit Do
+                End If
+            End If
+            Delay 500
+        
+            If count > 100 Then 
+                Exit Function
+            End If
+        
+            count = count + 1
+            Call L("Fight::Do1 "&count)
+        Loop
+    End If
     
-    Dim x,y,count = 0
+    count = 0
     Do	
         FindPic 400,170-DeviationY,540,270-DeviationY,"Attachment:Ê¤Àû»­Ãæ.bmp","000000",0,0.9,x,y
         If x > 0 And y > 0 Then
@@ -159,7 +182,7 @@ Function Fight()
         Delay 1000
         
         count = count + 1
-        Call L("Fight::Do "&count)
+        Call L("Fight::Do2 "&count)
     Loop
     Delay 1000
     Call L("Tap 1")
