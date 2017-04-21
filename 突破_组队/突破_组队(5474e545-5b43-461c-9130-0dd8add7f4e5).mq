@@ -110,7 +110,7 @@ Function Double()//组队攻击
     
     Dim x,y,count = 0
     Do
-        FindPic fight_x - 400, fight_y - 300, fight_x + 400, fight_y + 300, "Attachment:组队.bmp", "000000",0, 0.8, x, y
+        FindPic fight_x - 600, fight_y - 500, fight_x + 600, fight_y + 500, "Attachment:组队.bmp", "000000",0, 0.8, x, y
         If x > 0 And y > 0 Then 
             Delay 1000
             Tap x,y
@@ -129,7 +129,7 @@ Function Double()//组队攻击
         End If
         
         count = count + 1
-        Call L3("double::Do " & count,count,120)
+        //Call L3("double::Do " & count,count,120)
     Loop
     
     FindPic 1150, 75-DeviationY, 1210, 125-DeviationY, "Attachment:close.bmp", "000000",0,0.8, x, y
@@ -173,7 +173,7 @@ Function Single()//单人攻击
     
     Dim x,y,count = 0
     Do
-        FindPic fight_x - 400, fight_y - 300, fight_x + 400, fight_y + 300, "Attachment:攻击.bmp", "000000",0,0.8, x, y
+        FindPic fight_x - 600, fight_y - 500, fight_x + 600, fight_y + 500, "Attachment:攻击.bmp", "000000",0,0.8, x, y
         If x > 0 And y > 0 Then 
             Tap x,y
             Delay 2000
@@ -190,7 +190,7 @@ Function Single()//单人攻击
         End If
         
         count = count + 1
-        Call L3("single::Do "& count,count,120)
+        //Call L3("single::Do "& count,count,120)
     Loop
     
     Call Ready()
@@ -305,10 +305,10 @@ Function Fight()
     Delay 1500
     Call L("Tap 2")
     Tap 1164,584-DeviationY//准备
-    Delay 4000
+    Delay 2500
     Call L("Tap 3")
     Tap 1164,584-DeviationY//准备
-    Delay 4000
+    Delay 3500
     
     count = 0
     Do
