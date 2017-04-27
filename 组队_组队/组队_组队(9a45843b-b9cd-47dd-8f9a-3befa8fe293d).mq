@@ -44,23 +44,23 @@ Function Invite()
     Tap 716,507-DeviationY //邀请
     Delay 1000
     
-//    Dim x,y,count = 0
-//    Do
-//        FindPic 350,200-DeviationY,920,560-DeviationY,"Attachment:大号.bmp","000000",0,0.9,x,y
-//        If x > 0 And y > 0 Then 
-//            Tap x,y
-//            Delay 1000
-//            Exit Do
-//        Else 
-//            Delay 1000
-//        End If
-//        
-//        count = count + 1
-//        Call L("Invite::Do "&count)
-//    Loop
+    //    Dim x,y,count = 0
+    //    Do
+    //        FindPic 350,200-DeviationY,920,560-DeviationY,"Attachment:大号.bmp","000000",0,0.9,x,y
+    //        If x > 0 And y > 0 Then 
+    //            Tap x,y
+    //            Delay 1000
+    //            Exit Do
+    //        Else 
+    //            Delay 1000
+    //        End If
+    //        
+    //        count = count + 1
+    //        Call L("Invite::Do "&count)
+    //    Loop
 
-	Tap 485,256-DeviationY//大/小号
-	Delay 1000
+    Tap 485,256-DeviationY//大/小号
+    Delay 1000
     
     Tap 774,607-DeviationY //邀请按钮
     Delay 1000
@@ -144,23 +144,19 @@ Function Fight(i)
         
     Dim x,y,count = 0,flag_found = 0
     If i = 1 Then 
-    	Delay 3000
-    	
         Do
             FindPic 15,40-DeviationY,60,90-DeviationY,"Attachment:return_3.bmp","000000",0,0.9,x,y
             If x > 0 And y > 0 Then
-                Tap 960,290-DeviationY//小怪
+                Tap 990,310-DeviationY//小怪
                 flag_found = 1
             Else 
-                If flag_found = 1 Then 
+                If flag_found > 0 And flag_found<6 Then 
+                    flag_found = flag_found + 1
+                ElseIf flag_found = 6 Then
                     Exit Do
                 End If
             End If
-            Delay 500
-        
-            If count > 100 Then 
-                Exit Function
-            End If
+            Delay 700
         
             count = count + 1
             Call L("Fight::Do1 "&count)
@@ -184,6 +180,7 @@ Function Fight(i)
         count = count + 1
         Call L("Fight::Do2 "&count)
     Loop
+    
     Delay 1000
     Call L("Tap 1")
     Tap 1164,584-DeviationY//准备
@@ -194,6 +191,36 @@ Function Fight(i)
     Call L("Tap 3")
     Tap 1164,584-DeviationY//准备
     Delay 4000
+
+    If i = 1 Then 
+        count = 0
+        Do
+            FindPic 1214, 54-DeviationY, 1257, 88-DeviationY, "Attachment:msg.bmp", "000000",0,0.8, x, y
+            If x > 0 and y > 0 Then 
+                Exit Do
+            End If
+            Delay 1000
+        
+            Tap 1164,584-DeviationY//准备
+        
+            count = count + 1
+            Call L3("Fight::Do3 "&count,count,20)
+        Loop
+    Else 
+        count = 0
+        Do
+            FindPic 715,444-DeviationY,808,481-DeviationY,"Attachment:确定.bmp","000000",0,0.9,x,y
+            If x > 0 and y > 0 Then 
+                Exit Do
+            End If
+            Delay 1000
+        
+            Tap 1164,584-DeviationY//准备
+        
+            count = count + 1
+            Call L3("Fight::Do4 "&count,count,20)
+        Loop
+    End If
 End Function
 
 Function ShiftTo(i)

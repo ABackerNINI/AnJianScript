@@ -444,7 +444,7 @@ Function FindWhichToFight()//²éÕÒµÈ¼¶[1-29]
     Do
         FindPic x1 - 50,y - 10,x1 + 10,y + 50,"Attachment:Î´Í»ÆÆ.bmp","000000",0,0.9,fight_x,fight_y
         If fight_x > 0 And fight_y > 0 Then 
-            FindPic x1 - 157,y + 67,x1 - 120,y + 103,"Attachment:Ñ«ÕÂ.bmp","000000",0,0.9,fight_x,fight_y
+            FindPic x1 - 255,y + 60,x1 - 195,y + 110,"Attachment:Ñ«ÕÂ.bmp","000000",0,0.8,fight_x,fight_y
             If fight_x < 0 and fight_y < 0 Then 
                 fight_x = x1 - 50
                 fight_y = y + 50
@@ -454,7 +454,7 @@ Function FindWhichToFight()//²éÕÒµÈ¼¶[1-29]
         
         FindPic x2 - 50,y - 10,x2 + 10,y + 50,"Attachment:Î´Í»ÆÆ.bmp","000000",0,0.9,fight_x,fight_y
         If fight_x > 0 And fight_y > 0 Then 
-            FindPic x1 - 157,y + 67,x1 - 120,y + 103,"Attachment:Ñ«ÕÂ.bmp","000000",0,0.9,fight_x,fight_y
+            FindPic  x1 - 255,y + 60,x1 - 195,y + 110,"Attachment:Ñ«ÕÂ.bmp","000000",0,0.8,fight_x,fight_y
             If fight_x < 0 and fight_y < 0 Then 
                 fight_x = x2 - 50
                 fight_y = y + 50
